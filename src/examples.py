@@ -202,3 +202,29 @@ def eg14(p1s=[], params=[(1, 2, .01)], pts=512):
     newFigure()
     pylab.plot([t.imag for t in ft])
 #    plotC(ft)
+
+def eg14(pts=512):
+    """
+    forward ft, then ft on results
+    """
+    f = ftime.sdComplex(1.1, 2.3, 0, .005)
+    
+    ts = map(f, range(pts))
+    newFigure()
+    plotC(ts)
+    
+    ft = dft.dft1d(ts)
+    newFigure()
+    plotC(ft)
+    
+    ts2 = dft.dft1d(ft)
+    newFigure()
+    plotC(ts2)
+    
+    ft2 = dft.dft1d(ts2)
+    newFigure()
+    plotC(ft2)
+    
+    ts3 = dft.dft1d(ft2)
+    newFigure()
+    plotC(ts3)
