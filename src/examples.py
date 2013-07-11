@@ -160,7 +160,7 @@ def eg12(maxGap=5, pts=512, decayRate=0.005):
 
 def eg13(freqs=10, pts=512):
     """
-    many complex frequencies
+    many complex frequencies, randomly generated
     """
     fs = []
     for i in range(freqs):
@@ -185,7 +185,7 @@ def eg13(freqs=10, pts=512):
 
 def eg14(p1s=[], params=[(1, 2, .01)], pts=512):
     """
-    many complex frequencies
+    many complex frequencies, user supplied
     """
     fs = [ftime.sdComplex(float(amp), float(omega), 0, float(dr)) for (amp, omega, dr) in p1s + params]
     
@@ -203,7 +203,7 @@ def eg14(p1s=[], params=[(1, 2, .01)], pts=512):
     pylab.plot([t.imag for t in ft])
 #    plotC(ft)
 
-def eg14(pts=512):
+def eg15(pts=512):
     """
     forward ft, then ft on results
     """
@@ -228,3 +228,28 @@ def eg14(pts=512):
     ts3 = dft.dft1d(ft2)
     newFigure()
     plotC(ts3)
+
+def eg16(transients=5, noise=1, pts=512):
+    """
+    complex gaussian noise with multiple transients
+    """
+    p1 = ftime.sdComplex(5, 1.88,  0, 0.005)
+    
+    xs = range(pts)
+    
+    yseries = []
+    for _ in range(transients):
+        t1 = map(p1, xs)
+        t2 = numpy.random.normal(scale=noise, size=pts)
+        ts = [o.real + nr + 1j * (o.imag + ni) for (o, nr, ni) in zip(t1, numpy.random.normal(scale=noise, size=pts), numpy.random.normal(scale=noise, size=pts))]
+        yseries.append(ts)
+    
+    ts = map(sum, zip(*yseries))
+
+    ft = dft.dft1d(ts)
+
+    newFigure()
+    plotC(ts)
+
+    newFigure()
+    plotC(ft)
