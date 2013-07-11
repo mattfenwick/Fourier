@@ -11,7 +11,9 @@ _figure = 1
 def newFigure():
     global _figure
     pylab.figure(_figure)
+    val = _figure
     _figure += 1
+    return val
 
 def plotC(cs):
     reals = map(lambda x: x.real, cs)
@@ -162,12 +164,17 @@ def eg13(freqs=10, pts=512):
     """
     many complex frequencies, randomly generated
     """
+    def pos(frequency):
+        return (pts - frequency * pts / (2 * math.pi)) % pts
+    
     fs = []
+    params = []
     for i in range(freqs):
-        amp = random.random() * 10
+        amp = random.random() * 6.2 # let's keep it less than 2 * pi so there's no folding
         omega = random.random() * 10
         dr = random.random() * 0.03
         fs.append(ftime.sdComplex(amp, omega, 0, dr))
+        params.append((pos(omega), omega, amp, dr))
     
     def f(x):
         return sum([f(x) for f in fs])
@@ -182,6 +189,10 @@ def eg13(freqs=10, pts=512):
     newFigure()
     pylab.plot([t.imag for t in ft])
 #    plotC(ft)
+    sortedParams = sorted(params, key=lambda x: x[0])
+    print 'position, frequency, amplitude, decay rate:'
+    for ps in sortedParams:
+        print '    '.join(map(str, ps))
 
 def eg14(p1s=[], params=[(1, 2, .01)], pts=512):
     """
@@ -253,3 +264,24 @@ def eg16(transients=5, noise=1, pts=512):
 
     newFigure()
     plotC(ft)
+
+def eg17(params, extra=[(4, 2.5, .001), (4, 2.5, .003), (4, 2.5, .01), (4, 2.5, .03), (4, 2.5, .1)], pts=512):
+    """
+    more user-defined parameterization.
+    plus default values showing that decay rate has no effect on peak position
+    plots all time-domain data in one chart, and all ft data in a second chart (ignores reals)
+    """
+    xs = range(pts)
+    
+    yseries = []
+    for (amp, omega, dr) in params + extra:
+        f = ftime.sdComplex(amp, omega, 0, dr)
+        yseries.append(map(f, xs))
+    
+    m, n = newFigure(), newFigure()
+    for ys in yseries:
+        pylab.figure(m)
+        plotC(ys)
+        pylab.figure(n)
+        # plotC(dft.dft1d(ys))
+        pylab.plot([pt.imag for pt in dft.dft1d(ys)])
