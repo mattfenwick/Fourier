@@ -4,7 +4,7 @@ import itertools
 
 def applyAll(fs, xs):
     '''
-    calls the GenerateDataForOneFunction method for a list of functions and combines data
+    apply a list of functions to a list of x-values
     '''
     ys = []
     for x in xs:

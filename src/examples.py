@@ -18,109 +18,7 @@ def plotC(cs):
     imags = map(lambda x: x.imag, cs)
     pylab.plot(reals)
     pylab.plot(imags)
-    
-plotFT = plotC
 
-
-def eg1():
-    """
-    a non-decaying, real-only sine wave
-    """
-    newFigure()
-    plotFT(combine.applyAll([math.sin], range(500)))
-
-def eg2(a=1, w=0.5, offset=0, t=0.1):
-    """
-    a single real-only decaying sinusoid, plus its dft
-    """
-    p1 = ftime.SineDecay(a, w, offset, t)
-    theData = combine.applyAll([p1], range(500))
-    theFT = dft.dft1d(theData)
-
-    newFigure()
-    pylab.plot(theData)
-    newFigure()
-    plotFT(theFT)
-
-def eg3():
-    """
-    combines a couple frequencies.  real-only data
-    """
-    p1 = ftime.SineDecay(5, 150,  0, 0.1)
-    p2 = ftime.SineDecay(.3, 140, 0, 0.1)
-    
-    xs = range(500)
-    
-    t1 = map(p1, xs)
-    t2 = map(p2, xs)
-    tsum = combine.add(t1, t2)
-
-    ft1 = dft.dft1d(t1)
-    ft2 = dft.dft1d(t2)
-    ftsum = dft.dft1d(tsum)
-
-    newFigure()
-    pylab.plot(t1)
-    pylab.plot(t2)
-    pylab.plot(tsum)
-
-    newFigure()
-    plotFT(ft1)
-    newFigure()
-    plotFT(ft2)
-    newFigure()
-    plotFT(ftsum)
-
-def eg4():
-    """
-    shows effect of zero fill
-    """
-    p1 = ftime.SineDecay(5, .1,  0, 0.0025)
-    
-    xs = range(700)
-    
-    t1 = map(p1, xs)
-    t2 = t1[:500] + [0] * 200
-    tsum = combine.add(t1, t2)
-
-    ft1 = dft.dft1d(t1)
-    ft2 = dft.dft1d(t2)
-    ftsum = dft.dft1d(tsum)
-
-    newFigure()
-    pylab.plot(t1)
-    pylab.plot(t2)
-    pylab.plot(tsum)
-
-    newFigure()
-    plotFT(ft1)
-    newFigure()
-    plotFT(ft2)
-    newFigure()
-    plotFT(ftsum)
-
-def eg5():
-    """
-    shows effect of random noise.  poor noise function used
-    """
-    p1 = ftime.SineDecay(5, .1,  0, 0.005)
-    
-    t1 = map(p1, range(700))
-    t2 = map(lambda x: x + random.random() * 2 - 1, t1)
-
-    ft1 = dft.dft1d(t1)
-    ft2 = dft.dft1d(t2)
-
-    newFigure()
-    pylab.plot(t1)
-    pylab.plot(t2)
-
-    newFigure()
-    plotFT(ft1)
-    newFigure()
-    plotFT(ft2)
-
-## END REAL-ONLY DATA
 
 def eg6():
     '''
@@ -139,7 +37,6 @@ def eg6():
     
     newFigure()
     plotC(ft)
-    # plotFT(ft)
 
 def eg7(pts=128):
     '''
