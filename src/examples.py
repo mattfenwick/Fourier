@@ -291,3 +291,24 @@ def eg17(params, extra=[(4, 2.5, .001), (4, 2.5, .003), (4, 2.5, .01), (4, 2.5, 
         pylab.figure(n)
         # plotC(dft.dft1d(ys))
         pylab.plot([pt.imag for pt in dft.dft1d(ys)])
+
+def eg18(g1=1.0, g2=5.0, g3=-1.0, sw=6000.0, dr=0.005, pts=512):
+    """
+    lorentz-to-gauss windowing function, based on nmrpipe's gm function
+    """
+    p1 = ftime.sdComplex(5, 1.88,  0, dr)
+    
+    ts = map(p1, range(pts))
+    
+    def f(i):
+        something = math.pi * i * g1 / sw
+        g = 0.6 * math.pi * g2 * (g3 * (pts - 1) - i) / sw
+        return math.e ** (something - g * g)
+    
+    xs = [t * f(i) for (i, t) in enumerate(ts)]
+    newFigure()
+    plotC(xs)
+    
+    ft = dft.dft1d(xs)
+    newFigure()
+    plotC(ft)
