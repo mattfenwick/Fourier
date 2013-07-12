@@ -329,4 +329,18 @@ def eg19(o=math.pi/4., omega=1, omega2=5.14, dr=0.01, pts=2048):
     ft = dft.dft1d(ts)
     newFigure()
     plotC(ft)
+
+def eg20(tzero=1, w1=1, w2=5.14, pts=512):
+    """
+    1st-order phase correction
+    """
+    p1 = ftime.sdComplex(5, w1, 0, 0.01, tzero)
+    p2 = ftime.sdComplex(4, w2, 0, 0.01, tzero)
     
+    ts = map(lambda x: p1(x) + p2(x), range(pts))
+    newFigure()
+    plotC(ts)
+    
+    ft = dft.dft1d(ts)
+    newFigure()
+    plotC(ft)

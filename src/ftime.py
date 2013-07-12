@@ -3,7 +3,7 @@ from math import cos, sin, exp
 
 class SineDecay(object):
 
-    def __init__(self, a, w, offset, t):
+    def __init__(self, a, w, offset, t, tzero=0):
        '''
        -a - amplitude
        -w - frequency
@@ -14,14 +14,15 @@ class SineDecay(object):
        self.w = w
        self.offset = offset
        self.t = t
+       self.tzero = tzero
        
     def __call__(s, x):
-        return s.a * sin((x * s.w) + s.offset) * exp (-x * s.t)
+        return s.a * sin(((x + s.tzero) * s.w) + s.offset) * exp (-x * s.t)
 
 
 class CosineDecay(object):
 
-    def __init__(self, a, w, offset, t):
+    def __init__(self, a, w, offset, t, tzero=0):
        '''
        -a - amplitude
        -w - frequency
@@ -32,14 +33,15 @@ class CosineDecay(object):
        self.w = w
        self.offset = offset
        self.t = t
+       self.tzero = tzero
        
     def __call__(s, x):
-        return s.a * cos((x * s.w) + s.offset) * exp (-x * s.t)
+        return s.a * cos(((x + s.tzero) * s.w) + s.offset) * exp (-x * s.t)
 
 
-def sdComplex(a, w, o, t):
-    s = SineDecay(a, w, o, t)
-    c = CosineDecay(a, w, o, t)
+def sdComplex(a, w, o, t, tzero=0):
+    s = SineDecay(a, w, o, t, tzero)
+    c = CosineDecay(a, w, o, t, tzero)
     def f(x):
         return s(x) + (1j * c(x))
     return f
