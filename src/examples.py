@@ -312,3 +312,21 @@ def eg18(g1=1.0, g2=5.0, g3=-1.0, sw=6000.0, dr=0.005, pts=512):
     ft = dft.dft1d(xs)
     newFigure()
     plotC(ft)
+
+def eg19(o=math.pi/4., omega=1, omega2=5.14, dr=0.01, pts=2048):
+    """
+    zero-order phase correction
+    the default offset splits the "good" part of the signal evenly between the two channels.
+      `0` would put it all in one channel, and `pi / 2` would put it all in the other
+    """
+    p1 = ftime.sdComplex(5, omega, o, dr)
+    p2 = ftime.sdComplex(3, omega2, o, dr)
+    
+    ts = map(lambda x: p1(x) + p2(x), range(pts))
+    newFigure()
+    plotC(ts)
+    
+    ft = dft.dft1d(ts)
+    newFigure()
+    plotC(ft)
+    
