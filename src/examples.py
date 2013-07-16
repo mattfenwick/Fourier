@@ -21,6 +21,11 @@ def plotC(cs):
     pylab.plot(reals)
     pylab.plot(imags)
 
+def addFs(fs):
+    """
+    [a -> b] -> a -> b
+    """
+    return lambda x: sum([f(x) for f in fs])
 
 def eg6():
     '''
@@ -342,5 +347,46 @@ def eg20(tzero=1, w1=1, w2=5.14, pts=512):
     plotC(ts)
     
     ft = dft.dft1d(ts)
+    newFigure()
+    plotC(ft)
+
+def eg21(transients=5, noise=1, dr=0.02, pts=512):
+    """
+    Three peaks:  
+      1) fast decay, high amplitude
+      2) slow decay + high amplitude
+      3) slow decay + low amplitude
+    then add in noise, see which peaks are hard to distinguish
+    then do multiple transients, see how the peaks reappear
+    """
+    p1 = ftime.sdComplex(50, 5.32, 0, dr * 10)
+    p2 = ftime.sdComplex(50, 1.88, 0, dr)
+    p3 = ftime.sdComplex(2, 3.89, 0, dr)
+    f = addFs([p1, p2, p3])
+    
+    xs = range(pts)
+    
+    yseries = []
+    for _ in range(transients):
+        t1 = map(f, xs)
+        t2 = numpy.random.normal(scale=noise, size=pts)
+        ts = [o.real + nr + 1j * (o.imag + ni) for (o, nr, ni) in zip(t1, numpy.random.normal(scale=noise, size=pts), numpy.random.normal(scale=noise, size=pts))]
+        yseries.append(ts)
+    
+    ts = map(sum, zip(*yseries))
+
+    ft = dft.dft1d(ts)
+    
+    sums, tot, smallest = [], 0, min([y.imag for y in ft])
+    for x in ft:
+        tot += x.imag - smallest # substract the 'baseline'
+        sums.append(tot)
+    
+    newFigure()
+    pylab.plot(sums)
+
+    newFigure()
+    plotC(ts)
+
     newFigure()
     plotC(ft)
