@@ -45,11 +45,11 @@ def eg6():
     newFigure()
     plotC(ft)
 
-def eg7(pts=128):
+def eg7(w=1.88, dr=0.0005, pts=2048):
     '''
     truncated complex time-domain data
     '''
-    f = ftime.sdComplex(5, 1.88, 0, 0.005)
+    f = ftime.sdComplex(5, w, 0, dr)
     
     ts = map(f, range(pts))
     
