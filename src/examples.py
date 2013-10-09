@@ -27,6 +27,22 @@ def addFs(fs):
     """
     return lambda x: sum([f(x) for f in fs])
 
+def eg5(w=0.1):
+    '''
+    complex time-domain.  single frequency
+    '''
+    f = ftime.sdComplex(5, w, 0, 0.005)
+    
+    ts = map(f, range(512))
+    
+    newFigure()
+    plotC(ts)
+    
+    ft = dft.dft1d(ts)
+    
+    newFigure()
+    plotC(ft)
+    
 def eg6():
     '''
     complex time-domain data.  multiple frequencies
@@ -56,7 +72,7 @@ def eg7(w=1.88, dr=0.0005, pts=2048):
     newFigure()
     plotC(ts)
     
-    ft = dft.dft1d(ts)
+    ft = numpy.fft.fft(ts)
     
     newFigure()
     plotC(ft)
@@ -105,12 +121,12 @@ def eg9(noise=1, pts=512):
     newFigure()
     plotC(ft)
 
-def eg10(offset=0, omega=0.0839, pts=512):
+def eg10(offset=0, omega=0.0839, dr=0.005, pts=512):
     """
     complex out of phase (two sine waves -- no cosine)
     offset:  number of periods out of phase.  nmr data is normally 1/4 period out of phase, I think
     """
-    amp, dr = 5, 0.005 
+    amp = 5
     r = ftime.SineDecay(amp, omega, offset * 2 * math.pi, dr)
     i = ftime.CosineDecay(amp, omega, 0, dr)
     def f(x):
