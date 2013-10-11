@@ -101,11 +101,11 @@ def eg8(pts=256, zeroes=256):
     newFigure()
     plotC(ft2)
 
-def eg9(noise=1, pts=512):
+def eg9(noise=1, dr=0.005, pts=512):
     """
     complex gaussian noise
     """
-    p1 = ftime.sdComplex(5, 1.88,  0, 0.005)
+    p1 = ftime.sdComplex(5, 1.88,  0, dr)
     
     xs = range(pts)
     

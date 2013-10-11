@@ -39,9 +39,25 @@ class CosineDecay(object):
         return s.a * cos(((x + s.tzero) * s.w) + s.offset) * exp (-x * s.t)
 
 
+class ComplexDecay(object):
+    
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    def __call__(self, t):
+        return self.x(t) + (1j * self.y(t))
+
+
 def sdComplex(a, w, o, t, tzero=0):
-    s = SineDecay(a, w, o, t, tzero)
-    c = CosineDecay(a, w, o, t, tzero)
-    def f(x):
-        return s(x) + (1j * c(x))
-    return f
+#    s = SineDecay(a, w, o, t, tzero)
+#    c = CosineDecay(a, w, o, t, tzero)
+#    def f(x):
+#        return s(x) + (1j * c(x))
+#    return f
+    return ComplexDecay(SineDecay(a, w, o, t, tzero), CosineDecay(a, w, o, t, tzero))
+
+
+def csComplex(*args):
+    return ComplexDecay(CosineDecay(*args), SineDecay(*args))
+
