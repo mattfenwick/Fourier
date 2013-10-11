@@ -113,7 +113,8 @@ def eg9(noise=1, dr=0.005, pts=512):
     t2 = numpy.random.normal(scale=noise, size=pts)
     ts = [o.real + nr + 1j * (o.imag + ni) for (o, nr, ni) in zip(t1, numpy.random.normal(scale=noise, size=pts), numpy.random.normal(scale=noise, size=pts))]
 
-    ft = dft.dft1d(ts)
+#    ft = dft.dft1d(ts)
+    ft = numpy.fft.fft(ts)
 
     newFigure()
     plotC(ts)
@@ -391,7 +392,8 @@ def eg21(transients=5, noise=1, dr=0.02, pts=512):
     
     ts = map(sum, zip(*yseries))
 
-    ft = dft.dft1d(ts)
+#    ft = dft.dft1d(ts)
+    ft = numpy.fft.fft(ts)
     
     sums, tot, smallest = [], 0, min([y.imag for y in ft])
     for x in ft:

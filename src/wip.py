@@ -19,15 +19,17 @@ def newFigure():
 def plotC(cs):
     reals = map(lambda x: x.real, cs)
     imags = map(lambda x: x.imag, cs)
-    pylab.plot(reals)
-    pylab.plot(imags)
+    y = pylab.plot(reals)
+    z = pylab.plot(imags)
+    print y, z
+    return y
 
 
-def vanilla(amp=5, w=1, offset=0, dr=0.005, pts=512):
+def vanilla(amp=1, w=1, offset=0, dr=0.005, pts=512):
     '''
     complex time-domain.  single frequency
     '''
-    f = ftime.sdComplex(amp, w, offset, dr)
+    f = ftime.csComplex(amp, w, offset, dr)
     
     ts = map(f, range(pts))
     
@@ -41,7 +43,7 @@ def vanilla(amp=5, w=1, offset=0, dr=0.005, pts=512):
 
 
 def neg_freq(mult=0.3, pts=256):
-    f = ftime.sdComplex(5, 1, 0, 0.05)
+    f = ftime.csComplex(5, 1, 0, 0.05)
     
     ss = map(f, range(256))
     ts = [z.real + mult * 1j * z.imag for z in ss]
@@ -62,7 +64,7 @@ def zeroes(pts=256, zs=256):
     """
     complex zero fill
     """
-    p1 = ftime.sdComplex(5, 1.88,  0, 0.005)
+    p1 = ftime.csComplex(5, 1.88,  0, 0.005)
     
     xs = range(pts)
     
@@ -147,10 +149,12 @@ def noise():
 
 
 def rovnyak_limit():
-    e.eg9(noise=0.01, dr=0.01, pts=512)
-    e.eg9(noise=1,    dr=0.01, pts=512)
-    e.eg9(noise=1,    dr=0.01, pts=1024)
-    e.eg9(noise=1,    dr=0.01, pts=2048)
+    e.eg9(noise=0.5,    dr=0.015,  pts=128)
+    e.eg9(noise=0.001,  dr=0.015,  pts=256)
+    e.eg9(noise=0.5,    dr=0.015,  pts=256)
+#    e.eg9(noise=0.5,    dr=0.015,  pts=512)
+    e.eg9(noise=0.5,    dr=0.015,  pts=1024)
+    e.eg9(noise=0.5,    dr=0.015,  pts=4096)
 
 
 def transients():
