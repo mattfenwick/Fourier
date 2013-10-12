@@ -1,6 +1,5 @@
 
 function makeChart(elemid, title, sers) {
-    console.log('some data: ' + JSON.stringify(sers));
     var myChart = new Highcharts.Chart({
                 'chart': {
                     'renderTo'          : elemid,
@@ -60,7 +59,9 @@ function makeChart(elemid, title, sers) {
                         }
                     }
                 }, 
-                series: sers
+                series: sers.map(function(s) {
+                    return {'data': s.data, 'name': s.name, 'marker': {'radius': 1}};
+                })
     });
     return myChart;
 }

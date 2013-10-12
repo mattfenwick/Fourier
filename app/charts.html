@@ -39,10 +39,6 @@
             });
             var chart1 = makeChart('time', 'Time domain', times),
                 chart2 = makeChart('freq', 'Frequency domain', freqs);
-            console.log('now redrawing charts: ' + JSON.stringify([chart1.toString(), chart2.toString()]));
-            chart1.redraw();
-            chart2.redraw();
-            console.log('did they redraw?');
         }
         
         $("#phenomenon").change(updateChart);
