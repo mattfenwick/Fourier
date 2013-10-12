@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Matt's Amazing WIP!</title>
+  <script type="text/javascript" src="jquery.js"></script>
+  <script type="text/javascript" src="highcharts.js"></script>
+  <script type="text/javascript" src="charts.js"></script>
+  <script type="text/javascript" src="data.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+  
+  <body>
+  
+  <select id="phenomenon">
+    <option value="sine">Sine wave</option>
+    <option value="exponential">Exponential decay</option>
+  </select>
+  
+  <div class="chart" id="time"></div>
+  <div class="chart" id="freq"></div>
+  
+  <script type="text/javascript">
+    $(document).ready(function() {
+
+//        var chart = makeChart("chart", "column", []);
+        // um, what's the point of this?
+        // why does that need to be run, and why does that need to be saved in a variable?
+
+        function updateChart() {
+            var myData = DATA[$("#phenomenon").val()],
+                times = [],
+                freqs = [];
+            myData.series.map(function(s) {
+                times.push({'name': 'time: real ???', 'data': s.time[0]});
+                times.push({'name': 'time: imag ???', 'data': s.time[1]});
+                freqs.push({'name': 'freq: real ???', 'data': s.freq[0]});
+                freqs.push({'name': 'freq: imag ???', 'data': s.freq[1]});
+            });
+            var chart1 = makeChart('time', 'Time domain', times),
+                chart2 = makeChart('freq', 'Frequency domain', freqs);
+            console.log('now redrawing charts: ' + JSON.stringify([chart1.toString(), chart2.toString()]));
+            chart1.redraw();
+            chart2.redraw();
+            console.log('did they redraw?');
+        }
+        
+        $("#phenomenon").change(updateChart);
+
+    });
+  </script>
+
+  </body>
+  </html>
+  
