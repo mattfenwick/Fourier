@@ -60,7 +60,7 @@ function makeChart(elemid, title, sers) {
                     }
                 }, 
                 series: sers.map(function(s) {
-                    return {'data': s.data, 'name': s.name, 'marker': {'radius': 1}};
+                    return {'data': s.data, 'name': s.name, 'marker': {'radius': 1}, 'visible': false};
                 })
     });
     return myChart;
