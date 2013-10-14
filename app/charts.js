@@ -1,4 +1,12 @@
 
+var COLORS = [
+  'red',    'orange', 
+  'yellow', 'green',
+  'blue',   'purple',
+  'black',  'brown',
+  'pink',   'magenta'
+];
+
 function makeChart(elemid, title, sers) {
     var myChart = new Highcharts.Chart({
                 'chart': {
@@ -59,8 +67,15 @@ function makeChart(elemid, title, sers) {
                         }
                     }
                 }, 
-                series: sers.map(function(s) {
-                    return {'data': s.data, 'name': s.name, 'marker': {'radius': 1}, 'visible': false};
+                series: sers.map(function(s, ix) {
+                    if (ix > COLORS.length) {
+                        throw new Error('colors exhausted');
+                    }
+                    return {'data': s.data, 
+                            'name': s.name, 
+                            'marker': {'radius': 1}, 
+                            'visible': false,
+                            'color': COLORS[ix]};
                 })
     });
     return myChart;

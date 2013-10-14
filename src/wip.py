@@ -40,6 +40,19 @@ def vanilla(amp=1, w=1, offset=0, dr=0.005, pts=512):
     
     newFigure()
     plotC(ft)
+    
+    def split(cs):
+        real, imag = [], []
+        for c in cs:
+            real.append(round(c.real, 3))
+            imag.append(round(c.imag, 3))
+        return real, imag
+    tr, ti = split(ts)
+    fr, fi = split(ft)
+    print '\n        '.join(['      {', 
+                             '"time": [', str(tr) + ',', str(ti), '], ', 
+                             '"freq": [', str(fr) + ',', str(fi), ']',
+                             '}'])
 
 
 def neg_freq(mult=0.3, pts=256):
@@ -98,7 +111,7 @@ def sine_wave():
 
 
 def exponential_decay():
-    vanilla(w=0, dr=0.01)
+    vanilla(w=0)
 
 
 def simple_nmr():
@@ -116,9 +129,12 @@ def flipped():
 
 
 def width():
-    vanilla(dr=0.005, pts=2048)
-    vanilla(dr=0.015, pts=2048)
-    vanilla(dr=0.045, pts=2048)
+#    vanilla(dr=0.005)
+#    vanilla(dr=0.015)
+#    vanilla(dr=0.045)
+    vanilla(dr=0.01, pts=256)
+    vanilla(dr=0.03, pts=256)
+    vanilla(dr=0.09, pts=256)
 
 
 def truncation():
@@ -134,11 +150,9 @@ def amplitude():
 
 
 def shift():
-    vanilla(w=0.1)
-    vanilla(w=2)
-    vanilla(w=4)
-    vanilla(w=6)
-    vanilla(w=8)
+    vanilla(w=0.5, dr=0.02, pts=256)
+    vanilla(w=1.0, dr=0.02, pts=256)
+    vanilla(w=1.5, dr=0.02, pts=256)
 
 
 def noise():
