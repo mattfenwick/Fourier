@@ -51,15 +51,28 @@ def eg6():
     f2 = ftime.sdComplex(5, 5.37, 0, 0.005)
     f = lambda x: f1(x) + f2(x)
     
+    ts1 = map(f1, range(512))
+    ts2 = map(f2, range(512))
     ts = map(f, range(512))
     
     newFigure()
+    plotC(ts1)
+    newFigure()
+    plotC(ts2)
+    newFigure()
     plotC(ts)
     
+    ft1 = dft.dft1d(ts1)
+    ft2 = dft.dft1d(ts2)
     ft = dft.dft1d(ts)
     
     newFigure()
+    plotC(ft1)
+    newFigure()
+    plotC(ft2)
+    newFigure()
     plotC(ft)
+
 
 def eg7(w=1.88, dr=0.0005, pts=2048):
     '''
@@ -105,7 +118,7 @@ def eg9(noise=1, dr=0.005, pts=512):
     """
     complex gaussian noise
     """
-    p1 = ftime.sdComplex(5, 1.88,  0, dr)
+    p1 = ftime.csComplex(5, 1.88,  0, dr)
     
     xs = range(pts)
     
@@ -121,6 +134,7 @@ def eg9(noise=1, dr=0.005, pts=512):
 
     newFigure()
     plotC(ft)
+    return (ts, ft)
 
 def eg10(offset=0, omega=0.0839, dr=0.005, pts=512):
     """
@@ -226,7 +240,7 @@ def eg14(p1s=[], params=[(1, 2, .01)], pts=512):
     """
     many complex frequencies, user supplied
     """
-    fs = [ftime.sdComplex(float(amp), float(omega), 0, float(dr)) for (amp, omega, dr) in p1s + params]
+    fs = [ftime.csComplex(float(amp), float(omega), 0, float(dr)) for (amp, omega, dr) in p1s + params]
     
     def f(x):
         return sum([f(x) for f in fs])
@@ -239,8 +253,9 @@ def eg14(p1s=[], params=[(1, 2, .01)], pts=512):
     plotC(ts)
     
     newFigure()
-    pylab.plot([t.imag for t in ft])
-#    plotC(ft)
+#    pylab.plot([t.imag for t in ft])
+    plotC(ft)
+    return (ts, ft)
 
 def eg15(pts=512):
     """
@@ -376,9 +391,9 @@ def eg21(transients=5, noise=1, dr=0.02, pts=512):
     then add in noise, see which peaks are hard to distinguish
     then do multiple transients, see how the peaks reappear
     """
-    p1 = ftime.sdComplex(50, 5.32, 0, dr * 10)
-    p2 = ftime.sdComplex(50, 1.88, 0, dr)
-    p3 = ftime.sdComplex(2, 3.89, 0, dr)
+    p1 = ftime.csComplex(50, 5.32, 0, dr * 10)
+    p2 = ftime.csComplex(50, 1.88, 0, dr)
+    p3 = ftime.csComplex(2, 3.89, 0, dr)
     f = addFs([p1, p2, p3])
     
     xs = range(pts)
@@ -408,3 +423,5 @@ def eg21(transients=5, noise=1, dr=0.02, pts=512):
 
     newFigure()
     plotC(ft)
+    
+    return ([y / float(transients) for y in ts], [z / float(transients) for z in ft])

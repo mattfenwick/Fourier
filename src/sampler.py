@@ -63,3 +63,12 @@ def eg1():
     plotC(range(512), ft3)
 #    plotC(range(16384), ft4)
 #    plotC(range(2048), ft5)
+
+
+def resolution():
+    f1 = ftime.csComplex(1, 1, 0, 0.05)
+    f2 = ftime.csComplex(1, 1.1, 0, 0.05)
+    f3 = lambda x: f1(x) + f2(x)
+    
+    ts1 = sample(f3, 128, 0, 128)
+    ts2 = sample(f3, 128, 0, 512)
