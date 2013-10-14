@@ -141,7 +141,7 @@ def truncation():
     vanilla(pts=128)
     vanilla(pts=256)
     vanilla(pts=512)
-    vanilla(pts=1024)
+#    vanilla(pts=1024)
 
 
 def amplitude():
