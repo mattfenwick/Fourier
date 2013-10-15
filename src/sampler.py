@@ -69,7 +69,7 @@ def eg1():
     plotC([x / 4.0 for x in range(0, 512)], ts3)
 #    plotC([x / 128.0 for x in range(0, 16384)], ts4)
 #    plotC([x / 16.0 for x in range(0, 2048)], ts5)
-    plotC([x / 32.0 for x in range(0, 4096)], ts6)
+#    plotC([x / 32.0 for x in range(0, 4096)], ts6)
     
     newFigure()
     plotC(range(128), ft1)
@@ -77,7 +77,7 @@ def eg1():
     plotC(range(512), [y / 4.0 for y in ft3])
 #    plotC(range(16384), ft4)
 #    plotC(range(2048), ft5)
-    plotC(range(4096), [y / 32.0 for y in ft6])
+#    plotC(range(4096), [y / 32.0 for y in ft6])
 
 
 def resolution():
