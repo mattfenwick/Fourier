@@ -33,6 +33,9 @@ def sample(f, width, start, pts):
 
 
 def eg1():
+    """
+    aliasing ???
+    """
     f1 = ftime.csComplex(1, 10, 0, .05)
     f2 = ftime.csComplex(1, 2, 0, .05)
 #    f = lambda x: f1(x) + f2(x)
@@ -43,26 +46,38 @@ def eg1():
     ts3 = sample(f, 128, 0, 512)
     ts4 = sample(f, 128, 0, 16384)
     ts5 = sample(f, 128, 0, 2048)
+    ts6 = sample(f, 128, 0, 4096)
+    optional = ''' '' '
+    ts1[0] = ts1[0] / 2.0
+    ts2[0] = ts2[0] / 2.0
+    ts3[0] = ts3[0] / 2.0
+    ts4[0] = ts4[0] / 2.0
+    ts5[0] = ts5[0] / 2.0
+    ts6[0] = ts6[0] / 2.0
+    notdone = '' ' '''
     
     ft1 = numpy.fft.fft(ts1)
     ft2 = numpy.fft.fft(ts2)
     ft3 = numpy.fft.fft(ts3)
     ft4 = numpy.fft.fft(ts4)
     ft5 = numpy.fft.fft(ts5)
+    ft6 = numpy.fft.fft(ts6)
     
     newFigure()
-    plotC(range(0, 128, 1), ts1)
-    plotC([float(x) / 2.0 for x in range(0, 256)], ts2)
-    plotC([float(x) / 4.0 for x in range(0, 512)], ts3)
-#    plotC([float(x) / 128.0 for x in range(0, 16384)], ts4)
-#    plotC([float(x) / 16.0 for x in range(0, 2048)], ts5)
+    plotC(range(0, 128), ts1)
+    plotC([x / 2.0 for x in range(0, 256)], ts2)
+    plotC([x / 4.0 for x in range(0, 512)], ts3)
+#    plotC([x / 128.0 for x in range(0, 16384)], ts4)
+#    plotC([x / 16.0 for x in range(0, 2048)], ts5)
+    plotC([x / 32.0 for x in range(0, 4096)], ts6)
     
     newFigure()
     plotC(range(128), ft1)
-    plotC(range(256), ft2)
-    plotC(range(512), ft3)
+    plotC(range(256), [y / 2.0 for y in ft2])
+    plotC(range(512), [y / 4.0 for y in ft3])
 #    plotC(range(16384), ft4)
 #    plotC(range(2048), ft5)
+    plotC(range(4096), [y / 32.0 for y in ft6])
 
 
 def resolution():
