@@ -22,7 +22,7 @@
     $(document).ready(function() {
 
         Object.keys(DATA).map(function(k) {
-            $("#phenomenon").append('<option value="' + k + '">' + DATA[k].name + '</option>');
+            $("#phenomenon").append('<option value="' + k + '">' + k + '</option>');
         });
 
         function updateChart() {

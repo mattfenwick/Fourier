@@ -1,7 +1,5 @@
 var DATA = {
-  "nmr": {
-    "name": "Sine and exponential",
-    "description": "blah blah blah",
+  "nmr basics": {
     "series": [
       {
         "name": "sine",
@@ -39,7 +37,6 @@ var DATA = {
     ]
   },
   "decay rate": {
-    "name": "decay rate",
     "series": [
       {
         "name": "dr = 0.01", 
@@ -77,7 +74,6 @@ var DATA = {
     ]
   },
   "peak position": {
-    "name": "peak position",
     "series": [
       {
         "name": "f 1", 
@@ -115,7 +111,6 @@ var DATA = {
     ]
   }, 
   "aliasing": {
-    "name": "aliasing",
     "series": [
       {
         "name": "128 points", 
@@ -153,7 +148,6 @@ var DATA = {
     ]
   }, 
   "truncation": {
-    "name": "truncation", 
     "series": [
       {
         "name": "128 points",
@@ -191,7 +185,6 @@ var DATA = {
     ]
   }, 
   "linearity": {
-    "name": "linearity",
     "series": [
       {
         "name": "f 1", 
@@ -229,7 +222,6 @@ var DATA = {
     ]
   },
   "resolution": {
-    "name": "resolution",
     "series": [
        {
     	 "name": "32 points", 
@@ -267,7 +259,6 @@ var DATA = {
     ]
   }, 
   "noise": {
-    "name": "noise", 
     "series": [
       {
         "name": "0.1 noise", 
@@ -316,7 +307,6 @@ var DATA = {
     ]
   },
   "transients": {
-    "name": "transients",
     "series": [
       {
         "name": "1", 
@@ -376,7 +366,6 @@ var DATA = {
     ]
   }, 
   "real data": {
-    "name": "real data",
     "series": [
       {
         "name": "sample", 

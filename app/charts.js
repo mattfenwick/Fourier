@@ -73,7 +73,7 @@ function makeChart(elemid, title, sers) {
                     }
                     return {'data': s.data, 
                             'name': s.name, 
-                            'marker': {'radius': 1}, 
+                            'marker': {'radius': 2}, 
                             'visible': false,
                             'color': COLORS[ix]};
                 })
