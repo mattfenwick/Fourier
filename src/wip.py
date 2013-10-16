@@ -217,10 +217,10 @@ def transients():
 
 
 def multiple_frequencies():
-    e.eg13(1)
-    e.eg13(4)
-    e.eg13(16)
-    e.eg13(64, pts=256)
+    print dump(*e.eg13(1))
+    print dump(*e.eg13(4))
+    print dump(*e.eg13(16))
+    print dump(*e.eg13(64))
 
 
 def zero_fill():

@@ -212,8 +212,8 @@ def eg13(freqs=10, pts=512):
     fs = []
     params = []
     for i in range(freqs):
-        amp = random.random() * 6.2 # let's keep it less than 2 * pi so there's no folding
-        omega = random.random() * 10
+        amp = random.random() * 6.2 
+        omega = random.random() * 10 # um ... some folding because 10 > 2 pi
         dr = random.random() * 0.03
         fs.append(ftime.sdComplex(amp, omega, 0, dr))
         params.append((pos(omega), omega, amp, dr))
@@ -235,6 +235,7 @@ def eg13(freqs=10, pts=512):
     print 'position, frequency, amplitude, decay rate:'
     for ps in sortedParams:
         print '    '.join(map(str, ps))
+    return (ts, ft)
 
 def eg14(p1s=[], params=[(1, 2, .01)], pts=512):
     """
