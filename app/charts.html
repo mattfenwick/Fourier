@@ -7,6 +7,7 @@
   <script type="text/javascript" src="highcharts.js"></script>
   <script type="text/javascript" src="charts.js"></script>
   <script type="text/javascript" src="data.js"></script>
+  <script src="https://togetherjs.com/togetherjs.js"></script>
   <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
   
@@ -44,6 +45,11 @@
     });
   </script>
 
+  <button id="collaborate" type="button">Collaborate</button>
+  <script>
+    document.getElementById("collaborate")
+      .addEventListener("click", TogetherJS, false);
+  </script>
   </body>
   </html>
   
