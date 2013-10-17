@@ -1,10 +1,10 @@
 
 var COLORS = [
-  'red',    'orange', 
-  'yellow', 'green',
+  'red',    'black', 
+  'green',  'orange',
   'blue',   'purple',
   'pink',   'magenta', 
-  'black',  'brown'
+  'yellow', 'brown'
 ];
 
 function makeChart(elemid, title, sers) {
