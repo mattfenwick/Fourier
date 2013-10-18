@@ -2,13 +2,11 @@ import math
 import pylab
 import random
 import numpy
-from . import dft
-from . import combine
 from . import ftime
 
 
 def sdComplex(a, w, o, t, tzero=0):
-    return ComplexDecay(SineDecay(a, w, o, t, tzero), CosineDecay(a, w, o, t, tzero))
+    return ftime.complex(ftime.SineDecay(a, w, o, t, tzero), ftime.CosineDecay(a, w, o, t, tzero))
 
 
 _figure = 1
@@ -31,92 +29,9 @@ def addFs(fs):
     """
     return lambda x: sum([f(x) for f in fs])
 
-def eg5(w=0.1):
-    '''
-    complex time-domain.  single frequency
-    '''
-    f = sdComplex(5, w, 0, 0.005)
-    
-    ts = map(f, range(512))
-    
-    newFigure()
-    plotC(ts)
-    
-    ft = dft.dft1d(ts)
-    
-    newFigure()
-    plotC(ft)
-    
-def eg6():
-    '''
-    complex time-domain data.  multiple frequencies
-    '''
-    f1 = sdComplex(5, 1.88, 0, 0.005)
-    f2 = sdComplex(5, 5.37, 0, 0.005)
-    f = lambda x: f1(x) + f2(x)
-    
-    ts1 = map(f1, range(512))
-    ts2 = map(f2, range(512))
-    ts = map(f, range(512))
-    
-    newFigure()
-    plotC(ts1)
-    newFigure()
-    plotC(ts2)
-    newFigure()
-    plotC(ts)
-    
-    ft1 = dft.dft1d(ts1)
-    ft2 = dft.dft1d(ts2)
-    ft = dft.dft1d(ts)
-    
-    newFigure()
-    plotC(ft1)
-    newFigure()
-    plotC(ft2)
-    newFigure()
-    plotC(ft)
 
+    
 
-def eg7(w=1.88, dr=0.0005, pts=2048):
-    '''
-    truncated complex time-domain data
-    '''
-    f = sdComplex(5, w, 0, dr)
-    
-    ts = map(f, range(pts))
-    
-    newFigure()
-    plotC(ts)
-    
-    ft = numpy.fft.fft(ts)
-    
-    newFigure()
-    plotC(ft)
-
-def eg8(pts=256, zeroes=256):
-    """
-    complex zero fill
-    """
-    p1 = sdComplex(5, 1.88,  0, 0.005)
-    
-    xs = range(pts)
-    
-    t1 = map(p1, xs)
-    t2 = t1 + [0 + 0j] * zeroes
-
-    ft1 = dft.dft1d(t1)
-    ft2 = dft.dft1d(t2)
-
-    newFigure()
-    plotC(t1)
-    newFigure()
-    plotC(t2)
-
-    newFigure()
-    plotC(ft1)
-    newFigure()
-    plotC(ft2)
 
 def eg9(noise=1, omega=1.88, dr=0.005, pts=512):
     """
@@ -130,7 +45,7 @@ def eg9(noise=1, omega=1.88, dr=0.005, pts=512):
     t2 = numpy.random.normal(scale=noise, size=pts)
     ts = [o.real + nr + 1j * (o.imag + ni) for (o, nr, ni) in zip(t1, numpy.random.normal(scale=noise, size=pts), numpy.random.normal(scale=noise, size=pts))]
 
-#    ft = dft.dft1d(ts)
+#    ft = numpy.fft.fft(ts)
     ft = numpy.fft.fft(ts)
 
     newFigure()
@@ -153,7 +68,7 @@ def eg10(offset=0, omega=0.0839, dr=0.005, pts=512):
     
     ts = map(f, range(pts))
     
-    ft = dft.dft1d(ts)
+    ft = numpy.fft.fft(ts)
 
     newFigure()
     plotC(ts)
@@ -161,20 +76,6 @@ def eg10(offset=0, omega=0.0839, dr=0.005, pts=512):
     newFigure()
     plotC(ft)
 
-def eg11(decayRate=0.005, pts=512):
-    """
-    complex decay rate
-    """
-    p1 = sdComplex(5, 1.88,  0, decayRate)
-    
-    ts = map(p1, range(pts))
-    ft = dft.dft1d(ts)
-
-    newFigure()
-    plotC(ts)
-
-    newFigure()
-    plotC(ft)
 
 def eg12(maxGap=5, pts=512, decayRate=0.005):
     """
@@ -198,7 +99,7 @@ def eg12(maxGap=5, pts=512, decayRate=0.005):
             break
         ts[ix] = ts[ix].real + 0j
     
-    ft = dft.dft1d(ts)
+    ft = numpy.fft.fft(ts)
 
     newFigure()
     plotC(ts)
@@ -227,7 +128,7 @@ def eg13(freqs=10, pts=512):
     
     ts = map(f, range(pts))
     
-    ft = dft.dft1d(ts)
+    ft = numpy.fft.fft(ts)
     
     newFigure()
     plotC(ts)
@@ -252,7 +153,7 @@ def eg14(p1s=[], params=[(1, 2, .01)], pts=512):
     
     ts = map(f, range(pts))
     
-    ft = dft.dft1d(ts)
+    ft = numpy.fft.fft(ts)
     
     newFigure()
     plotC(ts)
@@ -262,77 +163,8 @@ def eg14(p1s=[], params=[(1, 2, .01)], pts=512):
     plotC(ft)
     return (ts, ft)
 
-def eg15(pts=512):
-    """
-    forward ft, then ft on results
-    """
-    f = sdComplex(1.1, 2.3, 0, .005)
-    
-    ts = map(f, range(pts))
-    newFigure()
-    plotC(ts)
-    
-    ft = dft.dft1d(ts)
-    newFigure()
-    plotC(ft)
-    
-    ts2 = dft.dft1d(ft)
-    newFigure()
-    plotC(ts2)
-    
-    ft2 = dft.dft1d(ts2)
-    newFigure()
-    plotC(ft2)
-    
-    ts3 = dft.dft1d(ft2)
-    newFigure()
-    plotC(ts3)
 
-def eg16(transients=5, noise=1, pts=512):
-    """
-    complex gaussian noise with multiple transients
-    """
-    p1 = sdComplex(5, 1.88,  0, 0.005)
-    
-    xs = range(pts)
-    
-    yseries = []
-    for _ in range(transients):
-        t1 = map(p1, xs)
-        t2 = numpy.random.normal(scale=noise, size=pts)
-        ts = [o.real + nr + 1j * (o.imag + ni) for (o, nr, ni) in zip(t1, numpy.random.normal(scale=noise, size=pts), numpy.random.normal(scale=noise, size=pts))]
-        yseries.append(ts)
-    
-    ts = map(sum, zip(*yseries))
 
-    ft = dft.dft1d(ts)
-
-    newFigure()
-    plotC(ts)
-
-    newFigure()
-    plotC(ft)
-
-def eg17(params, extra=[(4, 2.5, .001), (4, 2.5, .003), (4, 2.5, .01), (4, 2.5, .03), (4, 2.5, .1)], pts=512):
-    """
-    more user-defined parameterization.
-    plus default values showing that decay rate has no effect on peak position
-    plots all time-domain data in one chart, and all ft data in a second chart (ignores reals)
-    """
-    xs = range(pts)
-    
-    yseries = []
-    for (amp, omega, dr) in params + extra:
-        f = sdComplex(amp, omega, 0, dr)
-        yseries.append(map(f, xs))
-    
-    m, n = newFigure(), newFigure()
-    for ys in yseries:
-        pylab.figure(m)
-        plotC(ys)
-        pylab.figure(n)
-        # plotC(dft.dft1d(ys))
-        pylab.plot([pt.imag for pt in dft.dft1d(ys)])
 
 def eg18(g1=1.0, g2=5.0, g3=-1.0, sw=6000.0, dr=0.005, pts=512):
     """
@@ -351,7 +183,7 @@ def eg18(g1=1.0, g2=5.0, g3=-1.0, sw=6000.0, dr=0.005, pts=512):
     newFigure()
     plotC(xs)
     
-    ft = dft.dft1d(xs)
+    ft = numpy.fft.fft(xs)
     newFigure()
     plotC(ft)
 
@@ -368,7 +200,7 @@ def eg19(o=math.pi/4., omega=1, omega2=5.14, dr=0.01, pts=2048):
     newFigure()
     plotC(ts)
     
-    ft = dft.dft1d(ts)
+    ft = numpy.fft.fft(ts)
     newFigure()
     plotC(ft)
 
@@ -383,7 +215,7 @@ def eg20(tzero=1, w1=1, w2=5.14, pts=512):
     newFigure()
     plotC(ts)
     
-    ft = dft.dft1d(ts)
+    ft = numpy.fft.fft(ts)
     newFigure()
     plotC(ft)
 
@@ -412,7 +244,6 @@ def eg21(transients=5, noise=1, dr=0.02, pts=512):
     
     ts = map(sum, zip(*yseries))
 
-#    ft = dft.dft1d(ts)
     ft = numpy.fft.fft(ts)
     
     sums, tot, smallest = [], 0, min([y.imag for y in ft])

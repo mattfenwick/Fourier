@@ -105,7 +105,7 @@ def zeroes(pts=256, zs=256):
 
 
 def real_only():
-    f = ftime.SineDecay(5, 0.1, 0, 0.005)
+    f = ftime.CosineDecay(5, 0.1, 0, 0.005)
     ts = map(f, range(512))
     
     newFigure()
@@ -146,14 +146,14 @@ def truncation():
 
 
 def amplitude():
-    vanilla(amp=1)
-    vanilla(amp=5)
+    sampleFtAndDisplay(vanilla(amp=1))
+    sampleFtAndDisplay(vanilla(amp=5))
 
 
 def shift():
-    vanilla(w=0.5, dr=0.02, pts=256)
-    vanilla(w=1.0, dr=0.02, pts=256)
-    vanilla(w=1.5, dr=0.02, pts=256)
+    sampleFtAndDisplay(vanilla(w=0.5, dr=0.02, pts=256))
+    sampleFtAndDisplay(vanilla(w=1.0, dr=0.02, pts=256))
+    sampleFtAndDisplay(vanilla(w=1.5, dr=0.02, pts=256))
 
 
 def noise():
@@ -168,31 +168,9 @@ def linearity():
     f2 = ftime.csComplex(1, 1.4, 0, 0.005)
     f = lambda x: f1(x) + f2(x)
     
-    ts1 = map(f1, range(512))
-    ts2 = map(f2, range(512))
-    ts3 = map(f, range(512))
-    
-    newFigure()
-    plotC(ts1)
-    newFigure()
-    plotC(ts2)
-    newFigure()
-    plotC(ts3)
-    
-    ft1 = numpy.fft.fft(ts1)
-    ft2 = numpy.fft.fft(ts2)
-    ft3 = numpy.fft.fft(ts3)
-    
-    newFigure()
-    plotC(ft1)
-    newFigure()
-    plotC(ft2)
-    newFigure()
-    plotC(ft3)
-    
-    dump(ts1, ft1)
-    dump(ts2, ft2)
-    dump(ts3, ft3)
+    sampleFtAndDisplay(map(f1, range(512)))
+    sampleFtAndDisplay(map(f2, range(512)))
+    sampleFtAndDisplay(map(f, range(512)))
 
 
 def rovnyak_limit():
