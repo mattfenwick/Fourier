@@ -41,23 +41,30 @@ def dump(ts, ft):
                              '}'])
 
 
+def splitAdd(f, *fs):
+    def g(*args, **kwargs):
+        return sum([h(*args, **kwargs) for h in (f,) + fs])
+
+
+def sampleFtAndDisplay(ts):
+    newFigure()
+    plotC(ts)
+
+    ft = numpy.fft.fft(ts) # scale 1st point?
+    newFigure()
+    plotC(ft)
+    
+    dump(ts, ft)
+    return g
+
+
 def vanilla(amp=1, w=1, offset=0, dr=0.005, pts=512):
     '''
     complex time-domain.  single frequency
     '''
     f = ftime.csComplex(amp, w, offset, dr)
     
-    ts = map(f, range(pts))
-    
-    newFigure()
-    plotC(ts)
-    
-    ft = dft.dft1d(ts)
-    
-    newFigure()
-    plotC(ft)
-    
-    dump(ts, ft)
+    return map(f, range(pts))
 
 
 def neg_freq(mult=0.3, pts=256):
@@ -200,12 +207,12 @@ def linearity():
 
 
 def rovnyak_limit():
-    e.eg9(noise=0.5,    dr=0.015,  pts=128)
-    e.eg9(noise=0.001,  dr=0.015,  pts=256)
-    e.eg9(noise=0.5,    dr=0.015,  pts=256)
+    e.eg9(noise=0.5,    omega=0.5, dr=0.015,  pts=128)
+    e.eg9(noise=0.001,  omega=0.5, dr=0.015,  pts=256)
+    e.eg9(noise=0.5,    omega=0.5, dr=0.015,  pts=256)
 #    e.eg9(noise=0.5,    dr=0.015,  pts=512)
-    e.eg9(noise=0.5,    dr=0.015,  pts=1024)
-    e.eg9(noise=0.5,    dr=0.015,  pts=4096)
+    e.eg9(noise=0.5,    omega=0.5, dr=0.015,  pts=1024)
+    e.eg9(noise=0.5,    omega=0.5, dr=0.015,  pts=4096)
 
 
 def transients():

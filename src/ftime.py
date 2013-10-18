@@ -39,6 +39,10 @@ class CosineDecay(object):
         return s.a * cos(((x + s.tzero) * s.w) + s.offset) * exp (-x * s.t)
 
 
+def complex(fr, fi):
+    return lambda x: fr(x) + 1j * fi(x)
+
+
 class ComplexDecay(object):
     
     def __init__(self, x, y):
