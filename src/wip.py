@@ -2,7 +2,6 @@ import math
 import pylab
 import random
 import numpy
-from . import dft
 from . import ftime
 from . import examples as e
 
@@ -41,23 +40,30 @@ def dump(ts, ft):
                              '}'])
 
 
+def splitAdd(f, *fs):
+    def g(*args, **kwargs):
+        return sum([h(*args, **kwargs) for h in (f,) + fs])
+
+
+def sampleFtAndDisplay(ts):
+    newFigure()
+    plotC(ts)
+
+    ft = numpy.fft.fft(ts) # scale 1st point?
+    newFigure()
+    plotC(ft)
+    
+    dump(ts, ft)
+    return ft
+
+
 def vanilla(amp=1, w=1, offset=0, dr=0.005, pts=512):
     '''
     complex time-domain.  single frequency
     '''
     f = ftime.csComplex(amp, w, offset, dr)
     
-    ts = map(f, range(pts))
-    
-    newFigure()
-    plotC(ts)
-    
-    ft = dft.dft1d(ts)
-    
-    newFigure()
-    plotC(ft)
-    
-    dump(ts, ft)
+    return map(f, range(pts))
 
 
 def neg_freq(mult=0.3, pts=256):
@@ -72,7 +78,7 @@ def neg_freq(mult=0.3, pts=256):
     newFigure()
     plotC(ts)
     
-    ft = dft.dft1d(ts)
+    ft = numpy.fft.fft(ts)
     
     newFigure()
     plotC(ft)
@@ -89,7 +95,7 @@ def zeroes(pts=256, zs=256):
     t1 = map(p1, xs)
     ts = t1 + [0 + 0j] * zs
 
-    ft = dft.dft1d(ts)
+    ft = numpy.fft.fft(ts)
 
     newFigure()
     plotC(ts)
@@ -99,7 +105,7 @@ def zeroes(pts=256, zs=256):
 
 
 def real_only():
-    f = ftime.SineDecay(5, 0.1, 0, 0.005)
+    f = ftime.CosineDecay(5, 0.1, 0, 0.005)
     ts = map(f, range(512))
     
     newFigure()
@@ -112,52 +118,42 @@ def real_only():
 
 
 def sine_wave():
-    vanilla(w=0.1, dr=0)
+    sampleFtAndDisplay(vanilla(w=0.1, dr=0))
 
 
 def exponential_decay():
-    vanilla(w=0)
+    sampleFtAndDisplay(vanilla(w=0))
 
 
 def simple_nmr():
-    vanilla(w=0.1)
-
-
-def flipped():
-    f = ftime.csComplex(5, 0.1, 0, 0.005)
-    ts = map(f, range(512))
-    newFigure()
-    plotC(ts)
-    ft = numpy.fft.fft(ts)
-    newFigure()
-    plotC(ft)
+    sampleFtAndDisplay(vanilla(w=0.1))
 
 
 def width():
 #    vanilla(dr=0.005)
 #    vanilla(dr=0.015)
 #    vanilla(dr=0.045)
-    vanilla(dr=0.01, pts=256)
-    vanilla(dr=0.03, pts=256)
-    vanilla(dr=0.09, pts=256)
+    sampleFtAndDisplay(vanilla(dr=0.01, pts=256))
+    sampleFtAndDisplay(vanilla(dr=0.03, pts=256))
+    sampleFtAndDisplay(vanilla(dr=0.09, pts=256))
 
 
 def truncation():
-    vanilla(pts=128)
-    vanilla(pts=256)
-    vanilla(pts=512)
+    sampleFtAndDisplay(vanilla(pts=128))
+    sampleFtAndDisplay(vanilla(pts=256))
+    sampleFtAndDisplay(vanilla(pts=512))
 #    vanilla(pts=1024)
 
 
 def amplitude():
-    vanilla(amp=1)
-    vanilla(amp=5)
+    sampleFtAndDisplay(vanilla(amp=1))
+    sampleFtAndDisplay(vanilla(amp=5))
 
 
 def shift():
-    vanilla(w=0.5, dr=0.02, pts=256)
-    vanilla(w=1.0, dr=0.02, pts=256)
-    vanilla(w=1.5, dr=0.02, pts=256)
+    sampleFtAndDisplay(vanilla(w=0.5, dr=0.02, pts=256))
+    sampleFtAndDisplay(vanilla(w=1.0, dr=0.02, pts=256))
+    sampleFtAndDisplay(vanilla(w=1.5, dr=0.02, pts=256))
 
 
 def noise():
@@ -172,40 +168,18 @@ def linearity():
     f2 = ftime.csComplex(1, 1.4, 0, 0.005)
     f = lambda x: f1(x) + f2(x)
     
-    ts1 = map(f1, range(512))
-    ts2 = map(f2, range(512))
-    ts3 = map(f, range(512))
-    
-    newFigure()
-    plotC(ts1)
-    newFigure()
-    plotC(ts2)
-    newFigure()
-    plotC(ts3)
-    
-    ft1 = numpy.fft.fft(ts1)
-    ft2 = numpy.fft.fft(ts2)
-    ft3 = numpy.fft.fft(ts3)
-    
-    newFigure()
-    plotC(ft1)
-    newFigure()
-    plotC(ft2)
-    newFigure()
-    plotC(ft3)
-    
-    dump(ts1, ft1)
-    dump(ts2, ft2)
-    dump(ts3, ft3)
+    sampleFtAndDisplay(map(f1, range(512)))
+    sampleFtAndDisplay(map(f2, range(512)))
+    sampleFtAndDisplay(map(f, range(512)))
 
 
 def rovnyak_limit():
-    e.eg9(noise=0.5,    dr=0.015,  pts=128)
-    e.eg9(noise=0.001,  dr=0.015,  pts=256)
-    e.eg9(noise=0.5,    dr=0.015,  pts=256)
+    e.eg9(noise=0.5,    omega=0.5, dr=0.015,  pts=128)
+    e.eg9(noise=0.001,  omega=0.5, dr=0.015,  pts=256)
+    e.eg9(noise=0.5,    omega=0.5, dr=0.015,  pts=256)
 #    e.eg9(noise=0.5,    dr=0.015,  pts=512)
-    e.eg9(noise=0.5,    dr=0.015,  pts=1024)
-    e.eg9(noise=0.5,    dr=0.015,  pts=4096)
+    e.eg9(noise=0.5,    omega=0.5, dr=0.015,  pts=1024)
+    e.eg9(noise=0.5,    omega=0.5, dr=0.015,  pts=4096)
 
 
 def transients():
