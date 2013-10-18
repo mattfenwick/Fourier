@@ -2,7 +2,6 @@ import math
 import pylab
 import random
 import numpy
-from . import dft
 from . import ftime
 from . import examples as e
 
@@ -55,7 +54,7 @@ def sampleFtAndDisplay(ts):
     plotC(ft)
     
     dump(ts, ft)
-    return g
+    return ft
 
 
 def vanilla(amp=1, w=1, offset=0, dr=0.005, pts=512):
@@ -79,7 +78,7 @@ def neg_freq(mult=0.3, pts=256):
     newFigure()
     plotC(ts)
     
-    ft = dft.dft1d(ts)
+    ft = numpy.fft.fft(ts)
     
     newFigure()
     plotC(ft)
@@ -96,7 +95,7 @@ def zeroes(pts=256, zs=256):
     t1 = map(p1, xs)
     ts = t1 + [0 + 0j] * zs
 
-    ft = dft.dft1d(ts)
+    ft = numpy.fft.fft(ts)
 
     newFigure()
     plotC(ts)
@@ -119,40 +118,30 @@ def real_only():
 
 
 def sine_wave():
-    vanilla(w=0.1, dr=0)
+    sampleFtAndDisplay(vanilla(w=0.1, dr=0))
 
 
 def exponential_decay():
-    vanilla(w=0)
+    sampleFtAndDisplay(vanilla(w=0))
 
 
 def simple_nmr():
-    vanilla(w=0.1)
-
-
-def flipped():
-    f = ftime.csComplex(5, 0.1, 0, 0.005)
-    ts = map(f, range(512))
-    newFigure()
-    plotC(ts)
-    ft = numpy.fft.fft(ts)
-    newFigure()
-    plotC(ft)
+    sampleFtAndDisplay(vanilla(w=0.1))
 
 
 def width():
 #    vanilla(dr=0.005)
 #    vanilla(dr=0.015)
 #    vanilla(dr=0.045)
-    vanilla(dr=0.01, pts=256)
-    vanilla(dr=0.03, pts=256)
-    vanilla(dr=0.09, pts=256)
+    sampleFtAndDisplay(vanilla(dr=0.01, pts=256))
+    sampleFtAndDisplay(vanilla(dr=0.03, pts=256))
+    sampleFtAndDisplay(vanilla(dr=0.09, pts=256))
 
 
 def truncation():
-    vanilla(pts=128)
-    vanilla(pts=256)
-    vanilla(pts=512)
+    sampleFtAndDisplay(vanilla(pts=128))
+    sampleFtAndDisplay(vanilla(pts=256))
+    sampleFtAndDisplay(vanilla(pts=512))
 #    vanilla(pts=1024)
 
 
