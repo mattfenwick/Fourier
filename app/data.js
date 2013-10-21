@@ -391,7 +391,7 @@ var DATA = {
       }
     ]
   },
-  "many frequences": {
+  "many frequencies": {
     "series": [
 /* position, frequency, amplitude, decay rate:
 6.48306486861    6.20362613154    2.08839594339    0.0011514031792
