@@ -28,6 +28,19 @@ def manySigs(params, noise):
     return g
     
 
+def manySigsNoiseWindow(params, noise, lo, hi):
+    fs = [signal(*ps) for ps in params]
+    f1 = fnoise(noise)
+    def g(x):
+        sig = sum([f(x) for f in fs])
+        if lo <= x <= hi:
+            print 'for ', x, ', adding noise'
+            return sig + f1(x)
+        else:
+            print 'for ', x, ', not adding noise'
+            return sig
+    return g
+
 
 def sample(f, dt, n):
     return [f(x * dt) for x in range(n)]
@@ -75,3 +88,6 @@ def example(noise=3, pts=512):
     
     tsClean = sample(manySigs(params, 0.0001), dt, pts)
     ftClean = plot(tsClean)
+    
+    tsNoise = sample(manySigsNoiseWindow(params, 0.3, 25.6, 60), dt, pts)
+    ftNoise = plot(tsNoise)
