@@ -77,8 +77,8 @@ def example(noise=3, pts=512):
     dt = 0.1
 #    sig = full(1, 2, .1, noise)
     sig = manySigs(params, noise)
-    ts = sample(sig, dt, pts)
-    ft = plot(ts)
+#    ts = sample(sig, dt, pts)
+#    ft = plot(ts)
     
     ts8 = sampleTr(257, sig, dt, pts)
     ft8 = plot(ts8)
@@ -89,5 +89,8 @@ def example(noise=3, pts=512):
     tsClean = sample(manySigs(params, 0.0001), dt, pts)
     ftClean = plot(tsClean)
     
-    tsNoise = sample(manySigsNoiseWindow(params, 0.3, 25.6, 60), dt, pts)
-    ftNoise = plot(tsNoise)
+    tsLeft = sample(manySigsNoiseWindow(params, 0.3, 0, 25.6), dt, pts)
+    ftLeft = plot(tsLeft)
+    
+    tsRight = sample(manySigsNoiseWindow(params, 0.3, 25.6, 60), dt, pts)
+    ftRight = plot(tsRight)
