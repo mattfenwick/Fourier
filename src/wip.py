@@ -146,8 +146,8 @@ def truncation():
 
 
 def amplitude():
-    sampleFtAndDisplay(vanilla(amp=1))
-    sampleFtAndDisplay(vanilla(amp=5))
+    sampleFtAndDisplay(vanilla(amp=1, dr=0.03, pts=256))
+    sampleFtAndDisplay(vanilla(amp=5, dr=0.03, pts=256))
 
 
 def shift():
