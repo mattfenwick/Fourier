@@ -166,26 +166,42 @@ def eg14(p1s=[], params=[(1, 2, .01)], pts=512):
 
 
 
-def eg18(g1=1.0, g2=5.0, g3=-1.0, sw=6000.0, dr=0.005, pts=512):
+def eg18(w=0.3, g1=1.0, g2=5.0, g3=-1.0, sw=6000.0, dr=0.002, pts=512):
     """
     lorentz-to-gauss windowing function, based on nmrpipe's gm function
     """
-    p1 = sdComplex(5, 1.88,  0, dr)
+    p1 = sdComplex(5, w,  0, dr)
     
-    ts = map(p1, range(pts))
+    ts1 = map(p1, range(pts))
     
     def f(i):
         something = math.pi * i * g1 / sw
         g = 0.6 * math.pi * g2 * (g3 * (pts - 1) - i) / sw
         return math.e ** (something - g * g)
     
-    xs = [t * f(i) for (i, t) in enumerate(ts)]
+    first_half = ts1[:pts/2]
+    zeroes = [0] * (pts/2)
+    xs1 = ts1 # full data set
+    xs2 = first_half + zeroes
+    xs3 = [t * f(i) for (i, t) in enumerate(first_half)] + zeroes 
+
     newFigure()
-    plotC(xs)
+    pylab.plot([q.real for q in xs1])
+    newFigure()
+    pylab.plot([q2.real for q2 in xs2])
+    newFigure()
+    pylab.plot([q3.real for q3 in xs3])
     
-    ft = numpy.fft.fft(xs)
+    ft1 = numpy.fft.fft(xs1)
+    ft2 = numpy.fft.fft(xs2)
+    ft3 = numpy.fft.fft(xs3)
     newFigure()
-    plotC(ft)
+    pylab.plot([r.imag for r in ft1])
+    newFigure()
+    pylab.plot([r2.imag for r2 in ft2])
+    newFigure()
+    pylab.plot([r3.imag for r3 in ft3])
+
 
 def eg19(o=math.pi/4., omega=1, omega2=5.14, dr=0.01, pts=2048):
     """

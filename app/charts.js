@@ -3,7 +3,8 @@ var COLORS = [
   'red',    'black', 
   'green',  'orange',
   'blue',   'purple',
-  'cyan',   'magenta', 
+  'cyan',   'magenta',
+  'green', 'blue',
   'yellow', 'brown'
 ];
 
